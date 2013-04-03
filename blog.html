@@ -1,0 +1,27 @@
+---
+layout: blog
+title: Cody Veal's Blog
+---
+
+<div class="blog-posts">
+  <div class="row visible-desktop">
+  {% for post in site.posts %}
+  <div class="blog-post span3">
+    <a href="{{ post.url }}">{{ post.title }}</a>
+    <div class="blog-post-date">{{ post.date | date: "%B %e, %Y" }}</div>
+    </li>
+  </div>
+    {% endfor %}
+  </div>
+  <div class="row hidden-desktop">
+  {% for post in site.posts %}
+  <div class="blog-post span4">
+    <a href="{{ post.url }}">{{ post.title }}</a>
+    <div class="blog-post-date">{{ post.date | date: "%B %e, %Y" }}</div>
+    </li>
+  </div>
+    {% endfor %}
+
+  </div>
+    <div class="clear-both"></div>
+</div>
