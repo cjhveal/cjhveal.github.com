@@ -1,0 +1,127 @@
+body {
+  font-family: 'Gentium Book Basic', serif;
+}
+a {
+  color: #06F;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+#title-hero {
+  background-color: #FFF;
+  padding-bottom: 0;
+}
+@media (max-width: 767px) {
+  #title-hero {
+    padding: 20px;
+    text-align: center;
+  }
+  #title-hero p {
+    font-size: 14px;
+  }
+}
+#title-hero h1 {
+  margin-bottom: 20px;
+  display: inline-block;
+  font-family: 'Open Sans', sans-serif;
+}
+@media (max-width: 767px) {
+  #title-hero h1 {
+    font-size: 30px !important;
+    display: block;
+    margin-bottom: 10px;
+  }
+}
+.connect-group {
+  margin-left: 30px;
+  display: inline-block;
+}
+@media (max-width: 767px) {
+  .connect-group {
+    margin-left: 0 !important;
+    display: block;
+  }
+}
+.connect-icon {
+  display: inline-block;
+  text-align: center;
+  padding: 10px 0;
+  margin-right: 15px;
+  font-size: 12px;
+  font-family: 'Open Sans', sans-serif;
+  line-height: 18px;
+}
+@media (max-width: 767px) {
+  .connect-icon {
+    margin-right: 20px !important;
+    font-size: 12px;
+  }
+}
+.connect-icon a {
+  color: #333;
+}
+.connect-icon a:hover {
+  color: #06F;
+  text-decoration: none;
+}
+.blog-header {
+  margin-top: 20px;
+}
+.header-name {
+  font-size: 32px;
+  color: #333;
+  font-family: 'Open Sans', sans-serif;
+}
+.header-name:hover {
+  color: #06F;
+  text-decoration: none;
+}
+.sidebar-group {
+  margin-bottom: 10px;
+}
+.sidebar-header {
+  color: #06F;
+  text-transform: uppercase;
+  font-family: 'Open Sans', sans-serif;
+}
+.sidebar-recent-post {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sidebar-recent-post a {
+  color: #333;
+}
+.sidebar-recent-post a:hover {
+  color: #06F;
+}
+.blog-posts .blog-post {
+  margin-bottom: 20px;
+}
+.blog-posts .blog-post a {
+  font-size: 22px;
+}
+.blog-posts .blog-post .blog-post-date {
+  font-size: 14px;
+}
+.visible-desktop .blog-post:nth-child(3n + 1) {
+  clear: both;
+}
+.hidden-desktop .blog-post:nth-child(odd) {
+  clear: both;
+}
+#post-body {
+  max-width: 940px;
+  margin: auto;
+  font-size: 16px;
+}
+@media (max-width: 767px) {
+  .sidebar {
+    margin-top: 40px;
+  }
+  .blog-post {
+    text-align: center;
+    margin-top: 10px;
+  }
+}
