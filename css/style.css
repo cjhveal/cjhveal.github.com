@@ -104,6 +104,7 @@ a:hover {
 }
 .blog-posts .blog-post a {
   font-size: 22px;
+  line-height: 18px;
 }
 .blog-posts .blog-post .blog-post-date {
   font-size: 14px;
