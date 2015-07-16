@@ -1,0 +1,102 @@
+<html>
+<head>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+  <header>
+  <img class="header-sketch"></img>
+  <a class="header-title inverted-link" href="/">cody jh veal</a>
+</header>
+
+
+
+<div class="container">
+  <h4 class="post-title">Vim Killer Features Part 1: Text Objects</h4>
+  <div class="post-moment">
+    Posted about 2 years ago on February 9th, 2013
+  </div>
+  <div class="post-body">
+    <p>Vim has a notorious learning curve which often leads beginners to give up and
+return to a more traditional editor or IDE. I tried to learn Vim many times
+before I was able to fully embrace it, each time spending mountains of effort
+simply trying to get to parity with my productivity in other editors. While
+learning Vim will always require some frustration, a key insight is to find the
+killer features that no other editor will provide you.  This is part one in a
+series of posts about features in Vim I couldn&#39;t live without.</p>
+<p>Most editors require navigating by mouse or keyboard to the correct location and
+backspacing over some text character by character. I find this to be a very
+inefficient process. Vim instead works by applying operators to blocks of text.
+We can supply a block of text to an operator using our motions.  For instance we
+can use <code>dw</code> to delete text up to the start of the next word, or <code>yfx</code> to copy
+text up to the next occurrence of the character &#39;x&#39;. However, this method really
+provides little benefit over other editors, since we still need to navigate to
+the start and end of any region of text we wish to operate on. To compound
+problem, Vim movements are extremely unintuitive to the novice. Navigating to
+the start and end of text blocks is not easy for Vim beginners, and even feels
+clumsy to all but Vim experts</p>
+<p>Luckily, Vim allows us to specify a block of text in a more intuitive way. Plain
+text is naturally broken up into words, sentences, and paragraphs. When
+programming, pieces of text are often delimited by punctuation, like
+<code>array[indices]</code>, <code>&quot;strings&quot;</code>, or <code>&lt;html&gt;tags&lt;/html&gt;</code>. We can reference text
+that is grouped into logical chunks like this using Vim&#39;s <em>text objects</em>. Any
+operator that takes a motion will take a text object instead. This lets us avoid
+having to navigate to the start and end of regions, we simply need to move the
+cursor <em>anywhere</em> within the object.</p>
+<p>All text objects come in two forms, normal and inner (prefixed by <code>a</code> and <code>i</code>,
+respectively). As a general rule, normal text objects include the characters
+that delimit the object, while the inner form will leave the delimiters intact.
+The normal form is often used when deleting an object and the inner form is
+often useful for changing an object. For example, <code>da&quot;</code> will delete a double
+quoted string (perhaps to replace it with a variable), while <code>ci&quot;</code> will leave
+the quotes intact, and only delete the content inside the string, ready to be
+altered.</p>
+<p>Here&#39;s a list of built-in text objects:</p>
+<ul>
+<li>Word by punctuation: <code>aw</code>/<code>iw</code></li>
+<li>Word by whitespace: <code>aW</code>/<code>iW</code> (see <code>:help WORD</code>)</li>
+<li>Sentence: <code>as</code>/<code>is</code></li>
+<li>Paragraph: <code>ap</code>/<code>ip</code></li>
+<li>Quotes: <code>a&#39;</code>/<code>i&#39;</code> or <code>a&quot;</code>/<code>i&quot;</code></li>
+<li>Parentheses: <code>a)</code>/<code>i)</code></li>
+<li>Brackets: <code>a]</code>/<code>i]</code></li>
+<li>Braces: <code>a}</code>/<code>i}</code></li>
+<li>Angle Brackets: <code>a&gt;</code>/<code>i&gt;</code></li>
+<li>Tags (e.g. <code>&lt;html&gt;inner&lt;/html&gt;</code>): <code>at</code>/<code>it</code></li>
+</ul>
+<p>There are also a number of useful plugins which extend Vim&#39;s built-in pool of
+text objects to include some very useful objects.</p>
+<ul>
+<li><p><a href="https://github.com/vim-scripts/argtextobj.vim">ArgTextObj</a></p>
+<p>Adds an object for arguments lists of the form <code>(arg1, arg2, arg3)</code>,
+where <code>ia</code> will target an argument and <code>aa</code> will include the comma if
+present.</p>
+</li>
+<li><p><a href="https://github.com/kana/vim-textobj-entire">vim-textobj-entire</a></p>
+<p>Gives us an object to refer to the entire buffer. This is useful to
+replace the <code>gg&lt;command&gt;G</code> idiom. For example, to format the entire buffer
+use <code>=ae</code>, or to start fresh use <code>dae</code></p>
+</li>
+<li><p><a href="http://www.vim.org/scripts/script.php?script_id=2484">vim-textobj-indent</a></p>
+<p>Allows us to select lines based on their indentation. Useful in languages
+with syntactically significant whitespace like python or coffeescript.
+<code>ii</code> targets all contigious lines with the same or deeper indentation, while <code>ai</code> does the
+same while skipping over whitespace. The <code>aI</code> and <code>iI</code> variants are similar,
+but only select lines with the <em>same</em> level of indentation.</p>
+</li>
+<li><p><a href="https://github.com/mattn/vim-textobj-url">vim-textobj-url</a></p>
+<p>Adds support for URLs with the <code>au</code>/<code>iu</code> text object.</p>
+</li>
+<li><p><a href="https://github.com/thinca/vim-textobj-comment">vim-textobj-comment</a></p>
+<p>With this plugin, we can target text inside multi-line and single line
+comments, with <code>ac</code> including the comment tokens (<code>//</code> or <code>/* */</code>) and <code>ic</code>
+operating inside.</p>
+</li>
+</ul>
+
+  </div>
+</div>
+
+</body>
+</html>
