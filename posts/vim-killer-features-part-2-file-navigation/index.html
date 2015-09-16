@@ -1,0 +1,183 @@
+<html>
+<head>
+  <link rel="stylesheet" href="/css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Vim Killer Features Part 2: File Navigation | cody jh veal</title>
+  <meta name="description" content="Three methods for efficiently finding files in Vim, reducing the time to first edit and preserving flow when opening new files. Part two of a series on game-changing workflows enabled by Vim.">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Vim Killer Features Part 2: File Navigation">
+  <meta property="og:description" content="Three methods for efficiently finding files in Vim, reducing the time to first edit and preserving flow when opening new files. Part two of a series on game-changing workflows enabled by Vim.">
+
+  <script type="application/ld+json">
+    
+      {
+        "@context": "http://schema.org",
+        "@type" : "Person",
+        "name" : "Cody J.H. Veal",
+        "url" : "http://www.codyveal.com",
+        "sameAs" : [
+          "https://www.facebook.com/cody.veal",
+          "http://www.linkedin.com/in/codyveal",
+          "https://www.github.com/cjhveal"
+        ]
+      }
+    
+  </script>
+
+
+  
+
+  
+</head>
+
+<body>
+
+  <header>
+  <img class="header-sketch"></img>
+  <a class="header-title inverted-link" href="/">cody jh veal</a>
+</header>
+
+
+
+<div class="container">
+  <h2 class="post-title">Vim Killer Features Part 2: File Navigation</h2>
+  <div class="post-moment">
+    Written 2 months ago on July 12th, 2015
+  </div>
+  <div class="post-body">
+    <p>In the previous post of this series, I discussed text objects, which allow us to
+improve the efficiency with which we perform operations on text. In this post,
+I&#8217;ll be discussing how I quickly find the correct file to edit.</p>
+<p>I use three methods of navigating files in Vim, depending on how well I know the
+location of the file I want to open. While some of these methods aren&#8217;t built in
+to Vim, nor are they impossible to replicate in other editors, I have found that
+these methods integrate into my Vim workflow exceptionally.</p>
+<h3 id="-edit-command">:edit command</h3>
+<p>When I know the location very well, or it is located near the top of my source
+tree, I will often use Vim&#8217;s command line to open the file. This method has the
+benefit of working just fine on a vanilla Vim install, but it can be greatly
+improved with a few tips and configuration tweaks.</p>
+<p>First, the <code>:e</code> command opens files relative to the current working directory.
+You can check where Vim&#8217;s working directory is by running the <code>:pwd</code> command.
+You can optimize the number of keystrokes required to open files by changing
+your working directory with <code>:cd</code>.  I usually keep the working directory at the
+root of the current project, and move down into a subfolder if
+my work is almost entirely contained within. See <a href="http://vimdoc.sourceforge.net/htmldoc/editing.html#:cd"><code>:help :cd</code></a>
+for more information.</p>
+<p>Out of the box, the command line in Vim offers tab completion, however, it can
+be vastly improved with the <code>wildmenu</code> and <code>wildmode</code> options. These options
+enable enhanced capabilities of tab completion on the Vim command line. I
+personally prefer using <code>set wildmode=list:longest</code>, which completes to the
+longest common prefix string among the possible choices and displays those partial matches as a
+list. There are many other options, and <code>set wildmode=longest:full</code> is also
+common, which behaves similarly but opens the <code>wildmenu</code> instead of displaying a
+list. Or you could combine the approaches by opening the <code>wildmenu</code> on the
+second tab with <code>set wildmode=list:longest,full</code>. Take a look at the full gamut
+of <code>wildmode</code> option values through <a href="http://vimdoc.sourceforge.net/htmldoc/options.html#&#39;wildmode&#39;"><code>:help wildmode</code></a>.</p>
+<h3 id="tree-exploration">Tree Exploration</h3>
+<p>When dealing with an unfamiliar codebase, I find it very helpful to be able to
+explore the directory hierarchy and get acquainted with the project structure.
+Another use case for tree exploration is when pair-programming or explaining a
+piece of code to someone&#8212;the speed of the other methods listed here can be a
+little disorienting for onlookers.</p>
+<p>Vim has an explore view built in, called <code>netrw</code> and can be accessed by the
+<code>:Explore</code> command. When calling Vim on a directory, it also traditionally opens
+the explore view as well.  Pressing <code>i</code> allows you to cycle through different
+views, one of which is a tree view. You can set this as the default by putting
+<code>let g:netrw_liststyle=3</code> in your <code>.vimrc</code> file.</p>
+<p>However, There are some issues with <code>netrw</code>, including producing lots of &#8216;junk&#8217;
+buffers and even buffers that have <code>modified</code> and <code>nomodifiable</code> set. These can
+require you to close vim entirely to get rid of them. From what I gather,
+the tree list style is considerably more unstable.</p>
+<p>There exist lots of plugins written to augment, replace, or facilitate the use
+of <code>netrw</code>&#8216;s functionality. <a href="https://github.com/tpope/vim-vinegar/">vim-vinegar</a> is a plugin written by
+the prolific and esteemed Tim Pope. The inspiration for the plugin comes from
+an extremely insightful <a href="http://vimcasts.org/blog/2013/01/oil-and-vinegar-split-windows-and-project-drawer/">vimcast article</a> which discusses how
+&#8216;project drawers&#8217; don&#8217;t mix well with Vim&#8217;s system of splits (like oil and
+vinegar). vim-vinegar makes it simple to open an instance of <code>netrw</code> in the
+current buffer, and offers some handy shortcuts like opening a command line
+prepopulated with the file under the cursor.</p>
+<p>I have used <a href="https://github.com/scrooloose/nerdtree">NERDtree</a> for years as my explorer. However, splits are a
+huge part of my workflow and because of the points brought up in the oil vs.
+vinegar discussion above, I&#8217;ve found that this is the method I use the least in
+my day to day work. In researching this post I&#8217;ve come across <a href="https://github.com/dhruvasagar">Dhruva Sagar&#8217;s</a>
+<a href="https://github.com/dhruvasagar/vim-vinegar">port of vim-vinegar</a> which replicates the functionality of tpope&#8217;s vinegar
+using NERDtree instead of <code>netrw</code>. Having the explorer open in the same buffer
+as opposed to opening in the &#8216;project drawer&#8217; style might make the explorer a
+more natural part of my general work-flow.</p>
+<p>Since I do not use most of the heavy-duty features of NERDtree, I&#8217;m also planning on
+investigating alternate explorer implementations like <a href="https://github.com/Shougo/vimfiler.vim">vimfiler</a> and
+<a href="https://github.com/jeetsukumaran/vim-filebeagle">vim-filebeagle</a> to the heavier NERDtree.  Another alternative
+may be to lazy-load the NERDtree plugin so that I only load the plugin when I&#8217;m
+attempting to open the explorer view, as it is infrequent that I open it during
+any given editing session.</p>
+<h3 id="fuzzy-finding">Fuzzy Finding</h3>
+<p>This is the method I use most of the time when I want to edit another file.  In
+general, it takes only a few keystrokes to uniquely describe a file, no matter
+how deeply nested it is.  The fuzziness of the search allows me to type in as
+few characters as needed to distinguish the desired file.</p>
+<p>I first installed <a href="https://wincent.com/products/command-t">command-t</a> and loved it. After starting my dotfiles repo, I wanted
+minimal dependencies and replaced command-t with <a href="http://kien.github.io/ctrlp.vim/">ctrl-p</a>. I prefered the entirely
+vim-script implementation for portability.</p>
+<p>I noticed a performance difference, mainly on large repositories. The time I
+spent waiting for the search to complete locked me out of searching, which
+often broke my flow. To improve the lookup times I implemented keybindings to
+narrow my searches to common directories, like <code>/models</code> or <code>/lib</code>.  I would
+also change my working directory to limit the number of files searched through,
+using the same technique I described above. I found that this really made the
+tool more ergonomic, but in hindsight I see that I was simply working around
+the limitations of the implementation.</p>
+<p>I have recently discovered a new fuzzy-finder named <a href="https://github.com/junegunn/fzf">fzf</a> that is magnificent. It
+was written in Go by one of my favourite vimscript developers,
+<a href="https://github.com/junegunn/">Junegunn</a>. The choice of language gives us the ability to compile to
+a binary, meaning it maintains portability while acheiving a huge speedup on
+large searching.  It isn&#8217;t neccessarily a Vim plugin, which is actually a good
+thing. I can use it from the terminal or I can invoke it through Vim. It comes
+with fuzzy autocompletion for bash and zsh.</p>
+<p>Since fzf is not built specifically for vim, it&#8217;s designed to be very flexible
+and does not dictate or hold your hand much. You define a &#8216;source&#8217; that gets a
+list of items, and a &#8216;sink&#8217;, a command which accepts an item of that list. For
+instance, you might define the source as all the javascript files in the
+current project, and the sink could be the <code>:edit</code> command. Or even more
+ambitiously, the source could return a list of synonyms for a word under the
+cursor and the sink could replace the word in the buffer with the selected
+word.</p>
+<p>I found the <a href="fzf-wiki">fzf wiki</a> to be a big help in getting my environment set up
+correctly, and it has plenty of examples of how to glue commands together into an
+fzf search. I&#8217;m currently using <a href="https://github.com/junegunn/fzf/wiki/On-MacVim-with-iTerm2">this AppleScript</a> to integrate with iTerm2, but
+looking forward to getting <a href="https://tmux.github.io/">tmux</a> integrated into my workflow and completing the
+<a href="http://www.drbunsen.org/the-text-triumvirate/">text triumvirate</a>. For anyone looking to use fzf with Vim, I recomend checking
+out the <a href="https://github.com/junegunn/fzf.vim">fzf.vim plugin</a>, also written by Junegunn. It defines a bunch of useful
+commands that you are free to call from the Vim command line or create
+keybindings of your choosing. Just a few examples are <code>:History</code> to edit most
+recently used buffers, <code>:Tags</code> to jump to project tags (see <a href="http://ctags.sourceforge.net/">ctags</a>), and
+<code>:Colors</code> to change colorschemes.</p>
+
+  </div>
+  <div class="post-navigation">
+    
+    <a class="post-older" href="/posts/vim-killer-features-part-1-text-objects">
+      <i class="fa fa-long-arrow-left"></i>
+      <span>Older</span>
+    </a>
+    
+
+    
+  </div>
+</div>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-38382779-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

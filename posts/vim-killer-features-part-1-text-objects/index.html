@@ -1,6 +1,35 @@
 <html>
 <head>
   <link rel="stylesheet" href="/css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Vim Killer Features Part 1: Text Objects | cody jh veal</title>
+  <meta name="description" content="Efficiently and naturally describing groups of text, shifting our focus from low-level navigation to semantically describing actions. First in a series on the Vim superpowers I couldn&#39;t live without.">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Vim Killer Features Part 1: Text Objects">
+  <meta property="og:description" content="Efficiently and naturally describing groups of text, shifting our focus from low-level navigation to semantically describing actions. First in a series on the Vim superpowers I couldn&#39;t live without.">
+
+  <script type="application/ld+json">
+    
+      {
+        "@context": "http://schema.org",
+        "@type" : "Person",
+        "name" : "Cody J.H. Veal",
+        "url" : "http://www.codyveal.com",
+        "sameAs" : [
+          "https://www.facebook.com/cody.veal",
+          "http://www.linkedin.com/in/codyveal",
+          "https://www.github.com/cjhveal"
+        ]
+      }
+    
+  </script>
+
+
+  
+
+  
 </head>
 
 <body>
@@ -13,9 +42,9 @@
 
 
 <div class="container">
-  <h4 class="post-title">Vim Killer Features Part 1: Text Objects</h4>
+  <h2 class="post-title">Vim Killer Features Part 1: Text Objects</h2>
   <div class="post-moment">
-    Posted about 2 years ago on February 9th, 2013
+    Written 3 years ago on February 9th, 2013
   </div>
   <div class="post-body">
     <p>Vim has a notorious learning curve which often leads beginners to give up and
@@ -23,50 +52,77 @@ return to a more traditional editor or IDE. I tried to learn Vim many times
 before I was able to fully embrace it, each time spending mountains of effort
 simply trying to get to parity with my productivity in other editors. While
 learning Vim will always require some frustration, a key insight is to find the
-killer features that no other editor will provide you.  This is part one in a
-series of posts about features in Vim I couldn&#39;t live without.</p>
-<p>Most editors require navigating by mouse or keyboard to the correct location and
-backspacing over some text character by character. I find this to be a very
-inefficient process. Vim instead works by applying operators to blocks of text.
-We can supply a block of text to an operator using our motions.  For instance we
-can use <code>dw</code> to delete text up to the start of the next word, or <code>yfx</code> to copy
-text up to the next occurrence of the character &#39;x&#39;. However, this method really
-provides little benefit over other editors, since we still need to navigate to
-the start and end of any region of text we wish to operate on. To compound
-problem, Vim movements are extremely unintuitive to the novice. Navigating to
-the start and end of text blocks is not easy for Vim beginners, and even feels
-clumsy to all but Vim experts</p>
+<a href="https://en.wikipedia.org/wiki/Killer_feature">killer features</a> that no other
+editor will provide you. This is part one in a series of posts about features
+in Vim I couldn&#8217;t live without.</p>
+<h3 id="imperative-vs-declarative-editing">Imperative vs. Declarative Editing</h3>
+<p>Most common editors require navigating by mouse or keyboard to the end of a
+block of text and backspacing character by character before typing some new
+text.  While often there is a way to do this word by word, or for an entire line
+(with modifier keys or multiple clicks in rapid succession) it is still a very
+imperative paradigm. We must tell the editor how to manipulate the text at a low
+level, instead of simply stating what we want done.</p>
+<p>Vim&#8217;s modal paradigm instead works by providing us with a set of basic tools
+that we can compose in a very declarative manner. Vim extends the set of
+motions available to navigate around the file, for example <kbd>}</kbd> to move
+the cursor by paragraphs and <kbd>f</kbd><kbd>x</kbd> to find the next
+occurrence of the character &#8216;x&#8217;. <a href="http://naleid.com/">Ted Naleid</a> and <a href="https://github.com/LevelbossMike">Michael Klein</a>
+have come up with a <a href="https://github.com/LevelbossMike/vim_shortcut_wallpaper">great reference wallpaper</a> for motions.</p>
+<p>Vim also introduces operators which perform actions on blocks of text. For
+instance <kbd>d</kbd> is used to delete text and <kbd>=</kbd> can automatically
+correct indentation.  Composing operators and motions is simple to do and can
+achieve powerful results.  For instance we can use <kbd>d</kbd><kbd>G</kbd> to
+delete the rest of a file from our current line, or
+<kbd>c</kbd><kbd>T</kbd><kbd>&#8220;</kbd> to change text up to, (but not including)
+the previous double quote on the line. For more information see <a href="http://vimdoc.sourceforge.net/htmldoc/motion.html#operator"><code>:help
+operator</code></a>.</p>
+<h3 id="the-problem">The Problem</h3>
+<p>While it&#8217;s certainly useful to have many more options to navigate around the
+file and perform actions on text, this method closely resembles the imperative
+workflow of other editors since we still need to navigate to the start and end
+of any region of text we wish to operate on.</p>
+<p>To compound the problem, Vim movements are extremely unintuitive to the novice.
+There are many ways to move from point a to b, and determining the most
+efficient combination of keys to push requires understanding many movements and
+committing them to muscle memory. Navigating to the precise start and end of text
+blocks is not easy for Vim beginners, and even feels clumsy to all but seasoned
+Vim experts.</p>
+<h3 id="introducing-the-text-object">Introducing the Text Object</h3>
 <p>Luckily, Vim allows us to specify a block of text in a more intuitive way. Plain
 text is naturally broken up into words, sentences, and paragraphs. When
 programming, pieces of text are often delimited by punctuation, like
 <code>array[indices]</code>, <code>&quot;strings&quot;</code>, or <code>&lt;html&gt;tags&lt;/html&gt;</code>. We can reference text
-that is grouped into logical chunks like this using Vim&#39;s <em>text objects</em>. Any
+that is grouped into logical chunks like this using Vim&#8217;s <em>text objects</em>. Any
 operator that takes a motion will take a text object instead. This lets us avoid
 having to navigate to the start and end of regions, we simply need to move the
-cursor <em>anywhere</em> within the object.</p>
-<p>All text objects come in two forms, normal and inner (prefixed by <code>a</code> and <code>i</code>,
-respectively). As a general rule, normal text objects include the characters
-that delimit the object, while the inner form will leave the delimiters intact.
-The normal form is often used when deleting an object and the inner form is
-often useful for changing an object. For example, <code>da&quot;</code> will delete a double
-quoted string (perhaps to replace it with a variable), while <code>ci&quot;</code> will leave
-the quotes intact, and only delete the content inside the string, ready to be
-altered.</p>
-<p>Here&#39;s a list of built-in text objects:</p>
+cursor <em>anywhere</em> within the region.</p>
+<p>All text objects come in two forms, normal and inner (prefixed by <kbd>a</kbd>
+and <kbd>i</kbd>, respectively). As a general rule, normal text objects include
+the characters that delimit the object, while the inner form will leave the
+delimiters intact.  The normal form is often used when deleting an object and
+the inner form is often useful for changing an object. For example,
+<kbd>d</kbd><kbd>a</kbd><kbd>&#8220;</kbd> will delete a double quoted string
+(perhaps to replace it with a variable), while
+<kbd>c</kbd><kbd>i</kbd><kbd>&#8220;</kbd> will leave the quotes intact, and only
+delete the content inside the string, ready to be altered.</p>
+<h3 id="built-in-text-objects">Built-in Text Objects</h3>
+<p>Vim comes bundled with a number of text objects defined. I&#8217;ve listed them below,
+but you can get more detailed descriptions of them by viewing <a href="http://vimdoc.sourceforge.net/htmldoc/motion.html#text-objects"><code>:help text-objects</code></a>.</p>
 <ul>
-<li>Word by punctuation: <code>aw</code>/<code>iw</code></li>
-<li>Word by whitespace: <code>aW</code>/<code>iW</code> (see <code>:help WORD</code>)</li>
-<li>Sentence: <code>as</code>/<code>is</code></li>
-<li>Paragraph: <code>ap</code>/<code>ip</code></li>
-<li>Quotes: <code>a&#39;</code>/<code>i&#39;</code> or <code>a&quot;</code>/<code>i&quot;</code></li>
-<li>Parentheses: <code>a)</code>/<code>i)</code></li>
-<li>Brackets: <code>a]</code>/<code>i]</code></li>
-<li>Braces: <code>a}</code>/<code>i}</code></li>
-<li>Angle Brackets: <code>a&gt;</code>/<code>i&gt;</code></li>
-<li>Tags (e.g. <code>&lt;html&gt;inner&lt;/html&gt;</code>): <code>at</code>/<code>it</code></li>
+<li>Word by punctuation: <kbd>a</kbd><kbd>w</kbd>/<kbd>i</kbd><kbd>w</kbd></li>
+<li>Word by whitespace: <kbd>a</kbd><kbd>W</kbd>/<kbd>i</kbd><kbd>W</kbd> (see <a href="http://vimdoc.sourceforge.net/htmldoc/motion.html#WORD"><code>:help WORD</code></a>)</li>
+<li>Sentence: <kbd>a</kbd><kbd>s</kbd>/<kbd>i</kbd><kbd>s</kbd></li>
+<li>Paragraph: <kbd>a</kbd><kbd>p</kbd>/<kbd>i</kbd><kbd>p</kbd></li>
+<li>Quotes: <kbd>a</kbd><kbd>&#8220;</kbd>/<kbd>i</kbd><kbd>&#8220;</kbd></li>
+<li>Parentheses: <kbd>a</kbd><kbd>)</kbd>/<kbd>i</kbd><kbd>)</kbd></li>
+<li>Brackets: <kbd>a</kbd><kbd>]</kbd>/<kbd>i</kbd><kbd>]</kbd></li>
+<li>Braces: <kbd>a</kbd><kbd>}</kbd>/<kbd>i</kbd><kbd>}</kbd></li>
+<li>Angle Brackets: <kbd>a</kbd><kbd>></kbd>/<kbd>i</kbd><kbd>></kbd></li>
+<li>Tags (e.g. <code>&lt;html&gt;inner&lt;/html&gt;</code>): <kbd>a</kbd><kbd>t</kbd>/<kbd>i</kbd><kbd>t</kbd></li>
 </ul>
-<p>There are also a number of useful plugins which extend Vim&#39;s built-in pool of
-text objects to include some very useful objects.</p>
+<h3 id="user-text-objects">User Text Objects</h3>
+<p>There are also a number of useful plugins which extend Vim&#8217;s built-in pool of
+text objects to power some very useful workflows.</p>
 <ul>
 <li><p><a href="https://github.com/vim-scripts/argtextobj.vim">ArgTextObj</a></p>
 <p>Adds an object for arguments lists of the form <code>(arg1, arg2, arg3)</code>,
@@ -81,7 +137,7 @@ use <code>=ae</code>, or to start fresh use <code>dae</code></p>
 <li><p><a href="http://www.vim.org/scripts/script.php?script_id=2484">vim-textobj-indent</a></p>
 <p>Allows us to select lines based on their indentation. Useful in languages
 with syntactically significant whitespace like python or coffeescript.
-<code>ii</code> targets all contigious lines with the same or deeper indentation, while <code>ai</code> does the
+<code>ii</code> targets all contiguous lines with the same or deeper indentation, while <code>ai</code> does the
 same while skipping over whitespace. The <code>aI</code> and <code>iI</code> variants are similar,
 but only select lines with the <em>same</em> level of indentation.</p>
 </li>
@@ -95,6 +151,16 @@ operating inside.</p>
 </li>
 </ul>
 
+  </div>
+  <div class="post-navigation">
+    
+
+    
+    <a class="post-newer" href="/posts/vim-killer-features-part-2-file-navigation">
+      <span>Newer</span>
+      <i class="fa fa-long-arrow-right"></i>
+    </a>
+    
   </div>
 </div>
 
